@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/NN",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
