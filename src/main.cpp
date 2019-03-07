@@ -31,7 +31,7 @@ Tuple fitLine(const TrainBatch& x, float w, float b, float lr)
     for (auto const &value : trainingData) {
         auto [x, y] = value;
 
-        // Evaluate the objective and compute the error.
+        // Evaluate the model and compute the error.
         float y_hat = w * x + b;
         float error = y_hat - y;
 
@@ -42,10 +42,13 @@ Tuple fitLine(const TrainBatch& x, float w, float b, float lr)
         weightGrad += x * error;
         biasGrad += error;
     }
+    
+    weightGrad *= batchScale;
+    biasGrad *= batchScale;
 
-    // Gradient Descent. Making sure to scale lr by batch scale. The 2nd batch scale term is to finish computing the mean. Chose to not use pow for clarity.
-    float updatedBias = b - biasGrad * lr * batchScale * batchScale;
-    float updatedWeight = w - weightGrad * lr * batchScale * batchScale;
+    // Gradient Descent. Making sure to scale lr by batch scale.
+    float updatedWeight = w - weightGrad * lr * batchScale;
+    float updatedBias = b - biasGrad * lr * batchScale;
 
     // Log the MSE each time this is called.
     float mse = totalSquaredError * 1.0 / static_cast<float>(x.size());
